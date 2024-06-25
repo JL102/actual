@@ -403,7 +403,7 @@ export function ScheduleDetails({ id, transaction }) {
     }
   }
 
-  async function onEditRule(ruleId) {
+async function onEditRule(ruleId) {
     const rule = await send('rule-get', { id: ruleId || state.schedule.rule });
 
     globalDispatch(
