@@ -2,7 +2,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { popModal, pushModal } from 'loot-core/client/actions';
+import { pushModal } from 'loot-core/client/actions';
 import { useSchedules } from 'loot-core/src/client/data-hooks/schedules';
 import { send } from 'loot-core/src/platform/client/fetch';
 import { type Query } from 'loot-core/src/shared/query';
@@ -20,9 +20,11 @@ import { ROW_HEIGHT, SchedulesTable } from './SchedulesTable';
 export function ScheduleLink({
   transactionIds: ids,
   getTransaction,
+  onScheduleLinked,
 }: {
   transactionIds: string[];
   getTransaction: (transactionId: string) => TransactionEntity;
+  onScheduleLinked?: (scheduleId: string) => void;
 }) {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState('');
@@ -44,6 +46,7 @@ export function ScheduleLink({
         updated: ids.map(id => ({ id, schedule: scheduleId })),
       });
     }
+    onScheduleLinked?.(scheduleId);
   }
 
   async function onCreate() {
