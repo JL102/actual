@@ -437,7 +437,6 @@ function TransactionListWithPreviews({ account }) {
           },
         },
       });
-      onClearSelectedTransactions();
     };
 
     const pushPayeeAutocompleteModal = () => {
@@ -543,7 +542,6 @@ function TransactionListWithPreviews({ account }) {
       showUndoNotification({
         message: `Successfully duplicated ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''}.`,
       });
-      onClearSelectedTransactions();
     };
 
     await checkForReconciledTransactions(
@@ -603,7 +601,6 @@ function TransactionListWithPreviews({ account }) {
               type: 'warning',
               message: `Successfully deleted ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''}.`,
             });
-            onClearSelectedTransactions();
           },
         }),
       );
@@ -630,7 +627,6 @@ function TransactionListWithPreviews({ account }) {
           showUndoNotification({
             message: `Successfully linked ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''} to ${scheduleName}.`,
           });
-          onClearSelectedTransactions();
         },
       }),
     );
@@ -643,7 +639,6 @@ function TransactionListWithPreviews({ account }) {
     showUndoNotification({
       message: `Successfully unlinked ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''} from their respective schedules.`,
     });
-    onClearSelectedTransactions();
   };
 
   const onSetTransfer = () => {
