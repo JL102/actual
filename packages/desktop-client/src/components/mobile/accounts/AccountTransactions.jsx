@@ -45,6 +45,7 @@ import { useLocalPref } from '../../../hooks/useLocalPref';
 import { useNavigate } from '../../../hooks/useNavigate';
 import { usePayees } from '../../../hooks/usePayees';
 import { usePreviewTransactions } from '../../../hooks/usePreviewTransactions';
+import { SelectedProvider, useSelected } from '../../../hooks/useSelected';
 import { useUndo } from '../../../hooks/useUndo';
 import { styles, theme } from '../../../style';
 import { Text } from '../../common/Text';
@@ -283,19 +284,9 @@ function TransactionListWithPreviews({ account }) {
 
   // Note: deleted transactions will still be in this list so that
   // when the user undoes the delete, the transactions will still be selected.
-  const [selectedTransactions, setSelectedTransactions] = useState([]);
-  const hasMoreThanOneSelected = selectedTransactions.length > 1;
-
-  const onAddSelectedTransaction = transactionId =>
-    setSelectedTransactions(prev =>
-      prev.includes(transactionId)
-        ? prev.filter(id => id !== transactionId)
-        : [...prev, transactionId],
-    );
-
-  const onClearSelectedTransactions = () => {
-    setSelectedTransactions([]);
-  };
+  const selectedInst = useSelected('transactions', allTransactions);
+  const selectedTransactions = selectedInst.items;
+  const hasMoreThanOneSelected = selectedTransactions.size > 1;
 
   const { showUndoNotification } = useUndo();
 
@@ -397,7 +388,7 @@ function TransactionListWithPreviews({ account }) {
 
       showUndoNotification({
         title: 'Batch operation complete',
-        message: `Successfully updated ${name} of ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''} to [${displayValue}](#${displayValue}).`,
+        message: `Successfully updated ${name} of ${selectedTransactions.size} transaction${hasMoreThanOneSelected ? 's' : ''} to [${displayValue}](#${displayValue}).`,
         messageActions: {
           [displayValue]: () => {
             switch (name) {
@@ -520,7 +511,7 @@ function TransactionListWithPreviews({ account }) {
 
       showUndoNotification({
         title: 'Batch operation complete',
-        message: `Successfully duplicated ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''}.`,
+        message: `Successfully duplicated ${selectedTransactions.size} transaction${hasMoreThanOneSelected ? 's' : ''}.`,
       });
     };
 
@@ -580,7 +571,7 @@ function TransactionListWithPreviews({ account }) {
             showUndoNotification({
               type: 'warning',
               title: 'Batch operation complete',
-              message: `Successfully deleted ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''}.`,
+              message: `Successfully deleted ${selectedTransactions.size} transaction${hasMoreThanOneSelected ? 's' : ''}.`,
             });
           },
         }),
@@ -604,7 +595,7 @@ function TransactionListWithPreviews({ account }) {
           // with `messageActions` to open the schedule when the schedule name is clicked.
           showUndoNotification({
             title: 'Batch operation complete',
-            message: `Successfully linked ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''} to ${schedule.name}.`,
+            message: `Successfully linked ${selectedTransactions.size} transaction${hasMoreThanOneSelected ? 's' : ''} to ${schedule.name}.`,
           });
         },
       }),
@@ -617,7 +608,7 @@ function TransactionListWithPreviews({ account }) {
     });
     showUndoNotification({
       title: 'Batch operation complete',
-      message: `Successfully unlinked ${selectedTransactions.length} transaction${hasMoreThanOneSelected ? 's' : ''} from their respective schedules.`,
+      message: `Successfully unlinked ${selectedTransactions.size} transaction${hasMoreThanOneSelected ? 's' : ''} from their respective schedules.`,
     });
   };
 
@@ -652,28 +643,25 @@ function TransactionListWithPreviews({ account }) {
   };
 
   return (
-    <TransactionListWithBalances
-      isLoading={isLoading}
-      transactions={allTransactions}
-      selectedTransactions={selectedTransactions.filter(id =>
-        allTransactions.find(t => t.id === id),
-      )}
-      onAddSelectedTransaction={onAddSelectedTransaction}
-      onClearSelectedTransactions={onClearSelectedTransactions}
-      balance={balance}
-      balanceCleared={balanceCleared}
-      balanceUncleared={balanceUncleared}
-      onLoadMore={onLoadMore}
-      searchPlaceholder={`Search ${account.name}`}
-      onSearch={onSearch}
-      onOpenTransaction={onOpenTransaction}
-      onRefresh={onRefresh}
-      onBatchEdit={onBatchEdit}
-      onBatchDuplicate={onBatchDuplicate}
-      onSetTransfer={onSetTransfer}
-      onLinkSchedule={onLinkSchedule}
-      onUnlinkSchedule={onUnlinkSchedule}
-      onBatchDelete={onBatchDelete}
-    />
+    <SelectedProvider instance={selectedInst}>
+      <TransactionListWithBalances
+        isLoading={isLoading}
+        transactions={allTransactions}
+        balance={balance}
+        balanceCleared={balanceCleared}
+        balanceUncleared={balanceUncleared}
+        onLoadMore={onLoadMore}
+        searchPlaceholder={`Search ${account.name}`}
+        onSearch={onSearch}
+        onOpenTransaction={onOpenTransaction}
+        onRefresh={onRefresh}
+        onBatchEdit={onBatchEdit}
+        onBatchDuplicate={onBatchDuplicate}
+        onSetTransfer={onSetTransfer}
+        onLinkSchedule={onLinkSchedule}
+        onUnlinkSchedule={onUnlinkSchedule}
+        onBatchDelete={onBatchDelete}
+      />
+    </SelectedProvider>
   );
 }
