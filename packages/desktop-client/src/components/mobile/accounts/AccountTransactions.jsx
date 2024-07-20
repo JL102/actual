@@ -32,7 +32,6 @@ import { useDateFormat } from '../../../hooks/useDateFormat';
 import { useLocalPref } from '../../../hooks/useLocalPref';
 import { useNavigate } from '../../../hooks/useNavigate';
 import { usePreviewTransactions } from '../../../hooks/usePreviewTransactions';
-import { SelectedProvider, useSelected } from '../../../hooks/useSelected';
 import { styles, theme } from '../../../style';
 import { Text } from '../../common/Text';
 import { View } from '../../common/View';
@@ -265,22 +264,18 @@ function TransactionListWithPreviews({ account }) {
   const balanceCleared = queries.accountBalanceCleared(account);
   const balanceUncleared = queries.accountBalanceUncleared(account);
 
-  const selectedInst = useSelected('transactions', allTransactions);
-
   return (
-    <SelectedProvider instance={selectedInst}>
-      <TransactionListWithBalances
-        isLoading={isLoading}
-        transactions={allTransactions}
-        balance={balance}
-        balanceCleared={balanceCleared}
-        balanceUncleared={balanceUncleared}
-        onLoadMore={onLoadMore}
-        searchPlaceholder={`Search ${account.name}`}
-        onSearch={onSearch}
-        onOpenTransaction={onOpenTransaction}
-        onRefresh={onRefresh}
-      />
-    </SelectedProvider>
+    <TransactionListWithBalances
+      isLoading={isLoading}
+      transactions={allTransactions}
+      balance={balance}
+      balanceCleared={balanceCleared}
+      balanceUncleared={balanceUncleared}
+      onLoadMore={onLoadMore}
+      searchPlaceholder={`Search ${account.name}`}
+      onSearch={onSearch}
+      onOpenTransaction={onOpenTransaction}
+      onRefresh={onRefresh}
+    />
   );
 }
