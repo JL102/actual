@@ -5,6 +5,7 @@ import type {
   AddNotificationAction,
   RemoveNotificationAction,
   Notification,
+  SetNotificationInsetAction,
 } from '../state-types/notifications';
 
 export function addNotification(
@@ -32,5 +33,14 @@ export function removeNotification(id: string): RemoveNotificationAction {
   return {
     type: constants.REMOVE_NOTIFICATION,
     id,
+  };
+}
+
+export function setNotificationInset(
+  inset?: SetNotificationInsetAction['inset'] | null,
+): SetNotificationInsetAction {
+  return {
+    type: constants.SET_NOTIFICATION_INSET,
+    inset,
   };
 }
