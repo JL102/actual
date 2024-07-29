@@ -21,21 +21,23 @@ export function ModeButton({
   return (
     <Button
       variant="bare"
-      className={css({
-        padding: '5px 10px',
-        backgroundColor: theme.menuBackground,
-        marginRight: 5,
-        fontSize: 'inherit',
-        ...(selected && {
-          backgroundColor: theme.buttonPrimaryBackground,
-          color: theme.buttonPrimaryText,
-          ':hover': {
-            backgroundColor: theme.buttonPrimaryBackgroundHover,
-            color: theme.buttonPrimaryTextHover,
-          },
+      className={String(
+        css({
+          padding: '5px 10px',
+          backgroundColor: theme.menuBackground,
+          marginRight: 5,
+          fontSize: 'inherit',
+          ...(selected && {
+            backgroundColor: theme.buttonPrimaryBackground,
+            color: theme.buttonPrimaryText,
+            ':hover': {
+              backgroundColor: theme.buttonPrimaryBackgroundHover,
+              color: theme.buttonPrimaryTextHover,
+            },
+          }),
+          ...style,
         }),
-        ...style,
-      })}
+      )}
       onPress={onSelect}
     >
       {children}
