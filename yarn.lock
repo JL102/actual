@@ -119,7 +119,7 @@ __metadata:
     react-markdown: "npm:^8.0.7"
     react-modal: "npm:3.16.1"
     react-redux: "npm:7.2.9"
-    react-router-dom: "npm:6.21.3"
+    react-router-dom: "npm:6.26.1"
     react-simple-pull-to-refresh: "npm:^1.3.3"
     react-spring: "npm:^9.7.3"
     react-virtualized-auto-sizer: "npm:^1.0.21"
@@ -4149,10 +4149,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.14.2":
-  version: 1.14.2
-  resolution: "@remix-run/router@npm:1.14.2"
-  checksum: 10/422844e88b985f1e287301b302c6cf8169c9eea792f80d40464f97b25393bb2e697228ebd7a7b61444d5a51c5873c4a637aad20acde5886a5caf62e833c5ceee
+"@remix-run/router@npm:1.19.1":
+  version: 1.19.1
+  resolution: "@remix-run/router@npm:1.19.1"
+  checksum: 10/2800c2f6567a982fe942aacc4cb5b170e7cc89bd455960e3bea2424161ff7dac32d01886322d88dd19b88d1bea711f39566d17f02b73eeb74999affb471f8f52
   languageName: node
   linkType: hard
 
@@ -15921,27 +15921,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:6.21.3":
-  version: 6.21.3
-  resolution: "react-router-dom@npm:6.21.3"
+"react-router-dom@npm:6.26.1":
+  version: 6.26.1
+  resolution: "react-router-dom@npm:6.26.1"
   dependencies:
-    "@remix-run/router": "npm:1.14.2"
-    react-router: "npm:6.21.3"
+    "@remix-run/router": "npm:1.19.1"
+    react-router: "npm:6.26.1"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10/6e23e35d02e5c83847c8e47d7912d1f6c2c42a35f2317802031bdd993a8205468138a045ff34f67fe807fe9f7dc9d0995ee05bab25aedc0bf978e620ac132815
+  checksum: 10/1bd255d1ff88f477699c72656e7c07702a907e644388a1bea1c648f2df0c3c86db2e90bea945b1d43eaf84ebab194f3868f3788502965ad5f20c508c6874f1fe
   languageName: node
   linkType: hard
 
-"react-router@npm:6.21.3":
-  version: 6.21.3
-  resolution: "react-router@npm:6.21.3"
+"react-router@npm:6.26.1":
+  version: 6.26.1
+  resolution: "react-router@npm:6.26.1"
   dependencies:
-    "@remix-run/router": "npm:1.14.2"
+    "@remix-run/router": "npm:1.19.1"
   peerDependencies:
     react: ">=16.8"
-  checksum: 10/3d5107cfdb440519d84e6ad6d95454e3bf41ec97677b95f7b2a7f281f8ddf191b765cf1b599ead951f3cd33ed4429f140590d74a01cfdf835dc2f812023a978a
+  checksum: 10/b3761515c75da65a1678f005d08a6285ceccd9df7237ae6fdd9ab2ab816ef328435b75610f705ecd9ecd41c6878fd22eb9b44c5391cdef2e1ed99ddbc78de8a4
   languageName: node
   linkType: hard
 

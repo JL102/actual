@@ -7,9 +7,11 @@ import {
   Route,
   Routes,
   Navigate,
-  BrowserRouter,
   useLocation,
   useHref,
+  Outlet,
+  createBrowserRouter,
+  RouterProvider,
 } from 'react-router-dom';
 
 import { SpreadsheetProvider } from 'loot-core/src/client/SpreadsheetProvider';
@@ -95,26 +97,9 @@ function RouterBehaviors() {
   return null;
 }
 
-function FinancesAppWithoutContext() {
-  const actions = useActions();
-  useEffect(() => {
-    // Wait a little bit to make sure the sync button will get the
-    // sync start event. This can be improved later.
-    setTimeout(async () => {
-      await actions.sync();
-
-      await checkForUpdateNotification(
-        actions.addNotification,
-        getIsOutdated,
-        getLatestVersion,
-        actions.loadPrefs,
-        actions.savePrefs,
-      );
-    }, 100);
-  }, []);
-
+function Layout() {
   return (
-    <BrowserRouter>
+    <>
       <RouterBehaviors />
       <ExposeNavigate />
 
@@ -160,69 +145,7 @@ function FinancesAppWithoutContext() {
               <Notifications />
               <BankSyncStatus />
 
-              <Routes>
-                <Route path="/" element={<Navigate to="/budget" replace />} />
-
-                <Route path="/reports/*" element={<Reports />} />
-
-                <Route
-                  path="/budget"
-                  element={<NarrowAlternate name="Budget" />}
-                />
-
-                <Route
-                  path="/schedules"
-                  element={
-                    <NarrowNotSupported>
-                      <WideComponent name="Schedules" />
-                    </NarrowNotSupported>
-                  }
-                />
-
-                <Route path="/payees" element={<ManagePayeesPage />} />
-                <Route path="/rules" element={<ManageRulesPage />} />
-                <Route path="/settings" element={<Settings />} />
-
-                <Route
-                  path="/gocardless/link"
-                  element={
-                    <NarrowNotSupported>
-                      <WideComponent name="GoCardlessLink" />
-                    </NarrowNotSupported>
-                  }
-                />
-
-                <Route
-                  path="/accounts"
-                  element={<NarrowAlternate name="Accounts" />}
-                />
-
-                <Route
-                  path="/accounts/:id"
-                  element={<NarrowAlternate name="Account" />}
-                />
-
-                <Route
-                  path="/transactions/:transactionId"
-                  element={
-                    <WideNotSupported>
-                      <TransactionEdit />
-                    </WideNotSupported>
-                  }
-                />
-
-                <Route
-                  path="/categories/:id"
-                  element={
-                    <WideNotSupported>
-                      <Category />
-                    </WideNotSupported>
-                  }
-                />
-
-                {/* redirect all other traffic to the budget page */}
-                <Route path="/*" element={<Navigate to="/budget" replace />} />
-              </Routes>
+              <Outlet />
 
               <Modals />
             </div>
@@ -237,8 +160,78 @@ function FinancesAppWithoutContext() {
           </View>
         </View>
       </View>
-    </BrowserRouter>
+    </>
   );
+}
+
+function FinancesAppWithoutContext() {
+  const actions = useActions();
+  useEffect(() => {
+    // Wait a little bit to make sure the sync button will get the
+    // sync start event. This can be improved later.
+    setTimeout(async () => {
+      await actions.sync();
+
+      await checkForUpdateNotification(
+        actions.addNotification,
+        getIsOutdated,
+        getLatestVersion,
+        actions.loadPrefs,
+        actions.savePrefs,
+      );
+    }, 100);
+  }, []);
+
+  const router = createBrowserRouter([
+    {
+      element: <Layout />,
+      children: [
+        { path: '/', element: <Navigate to="/budget" replace /> },
+        { path: '/reports/*', element: <Reports /> },
+        { path: '/budget', element: <NarrowAlternate name="Budget" /> },
+        {
+          path: '/schedules',
+          element: (
+            <NarrowNotSupported>
+              <WideComponent name="Schedules" />
+            </NarrowNotSupported>
+          ),
+        },
+        { path: '/payees', element: <ManagePayeesPage /> },
+        { path: '/rules', element: <ManageRulesPage /> },
+        { path: '/settings', element: <Settings /> },
+        {
+          path: '/gocardless/link',
+          element: (
+            <NarrowNotSupported>
+              <WideComponent name="GoCardlessLink" />
+            </NarrowNotSupported>
+          ),
+        },
+        { path: '/accounts', element: <NarrowAlternate name="Accounts" /> },
+        { path: '/accounts/:id', element: <NarrowAlternate name="Account" /> },
+        {
+          path: '/transactions/:transactionId',
+          element: (
+            <WideNotSupported>
+              <TransactionEdit />
+            </WideNotSupported>
+          ),
+        },
+        {
+          path: '/categories/:id',
+          element: (
+            <WideNotSupported>
+              <Category />
+            </WideNotSupported>
+          ),
+        },
+        { path: '/*', element: <Navigate to="/budget" replace /> },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export function FinancesApp() {
